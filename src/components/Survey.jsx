@@ -4,18 +4,18 @@ import classNames from "classnames";
 
 const Survey = () => {
   const [activeCategory, setActiveCategory] = useState(0);
-  const [questions, setQuestions] = useState([
+  const [questions] = useState([
     { category_id: 1, id: 1, question: "Test question one" },
     { category_id: 1, id: 4, question: "Test question two" },
     { category_id: 2, id: 2, question: "Test question one category 2" },
     { category_id: 3, id: 3, question: "Test question one category 3" },
   ]);
-  const [categories, setCategories] = useState([
+  const [categories] = useState([
     { id: 1, name: "Check In" },
     { id: 2, name: "Category 2" },
     { id: 3, name: "Category 3" },
   ]);
-  const [choices, setChoices] = useState([
+  const [choices] = useState([
     { question_id: 1, id: 1, choice: "Extremly quick" },
     { question_id: 1, id: 2, choice: "Quite quick" },
     { question_id: 1, id: 3, choice: "Slightly quick" },
