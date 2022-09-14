@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Category } from "../common";
 import classNames from "classnames";
+import { connect } from "react-redux";
+import { getAllCategories, getAllQuestions } from "../actions/surveyActions";
 
-const Survey = () => {
+const Survey = ({
+  allCategories,
+  getAllCategories,
+  allQuestions,
+  getAllQuestions,
+}) => {
   const [activeCategory, setActiveCategory] = useState(0);
-  const [questions] = useState([
-    { category_id: 1, id: 1, question: "Test question one" },
-    { category_id: 1, id: 4, question: "Test question two" },
-    { category_id: 2, id: 2, question: "Test question one category 2" },
-    { category_id: 3, id: 3, question: "Test question one category 3" },
-  ]);
-  const [categories] = useState([
-    { id: 1, name: "Check In" },
-    { id: 2, name: "Category 2" },
-    { id: 3, name: "Category 3" },
-  ]);
+  // const [allQuestions] = useState([
+  //   { category_id: 1, id: 1, question: "Test question one" },
+  //   { category_id: 1, id: 4, question: "Test question two" },
+  //   { category_id: 2, id: 2, question: "Test question one category 2" },
+  //   { category_id: 3, id: 3, question: "Test question one category 3" },
+  // ]);
+  // const [categories] = useState([
+  //   { id: 1, name: "Check In" },
+  //   { id: 2, name: "Category 2" },
+  //   { id: 3, name: "Category 3" },
+  // ]);
   const [choices] = useState([
     { question_id: 1, id: 1, choice: "Extremly quick" },
     { question_id: 1, id: 2, choice: "Quite quick" },
@@ -28,6 +35,11 @@ const Survey = () => {
 
   const [customerFeedback, setCustomerFeedback] = useState([]);
 
+  useEffect(() => {
+    getAllCategories();
+    getAllQuestions();
+  }, []);
+
   const gatherFeedback = (e, choice, question_id, category_id) => {
     let answer = { choice, question_id, category_id };
 
@@ -40,7 +52,7 @@ const Survey = () => {
     );
 
     if (filtredArray.length === 0) {
-      // if the question is not yet answered, add to the already answered questions
+      // if the question is not yet answered, add to the already answered allQuestions
       setCustomerFeedback([...customerFeedback, answer]);
     } else {
       // if the question had already been answered, replace with the new answer
@@ -72,7 +84,7 @@ const Survey = () => {
                   gatherFeedback(e, ch.choice, question_id, category_id)
                 }
               />
-              <label className="form-check-label" for={ch.question_id}>
+              <label className="form-check-label" htmlFor={ch.question_id}>
                 {ch.choice}
               </label>
             </div>
@@ -84,37 +96,49 @@ const Survey = () => {
   };
 
   const displayQuestions = (category_id) => {
-    const allQuestions = questions
-      .filter((question) => question.category_id === category_id)
-      .map((qsn) => {
-        return (
-          <div key={qsn.id} className="my-3">
-            <div>{qsn.question}</div>
-            <div className="ms-3 mt-2">
-              {displayChoices(qsn.id, category_id)}
-            </div>
-          </div>
-        );
-      });
-    return allQuestions;
+    const questions =
+      allQuestions instanceof Array
+        ? allQuestions
+            .filter((question) => question.category_id === category_id)
+            .map((qsn) => {
+              return (
+                <div key={qsn.id} className="my-3">
+                  <div>{qsn.question}</div>
+                  <div className="ms-3 mt-2">
+                    {displayChoices(qsn.id, category_id)}
+                  </div>
+                </div>
+              );
+            })
+        : null;
+    return questions;
   };
 
-  const displayCategories = categories.map((cat) => {
-    return (
-      <div
-        key={cat.id}
-        className="d-flex justify-content-start flex-column mt-2"
-        style={{ cursor: "pointer" }}
-      >
-        <Category category={cat.name} setActive={() => setActive(cat.id)} />
-        <div
-          className={classNames("ms-3", activeCategory !== cat.id && "d-none")}
-        >
-          {displayQuestions(cat.id)}
-        </div>
-      </div>
-    );
-  });
+  const displayCategories =
+    allCategories instanceof Array
+      ? allCategories.map((cat) => {
+          return (
+            <div
+              key={cat.id}
+              className="d-flex justify-content-start flex-column mt-2"
+              style={{ cursor: "pointer" }}
+            >
+              <Category
+                category={cat.name}
+                setActive={() => setActive(cat.id)}
+              />
+              <div
+                className={classNames(
+                  "ms-3",
+                  activeCategory !== cat.id && "d-none"
+                )}
+              >
+                {displayQuestions(cat.id)}
+              </div>
+            </div>
+          );
+        })
+      : null;
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-center align-items-center py-3 bg-black text-warning fw-bold fs-4">
@@ -171,4 +195,11 @@ const Survey = () => {
   );
 };
 
-export default Survey;
+const mapStateToProps = (state) => ({
+  allCategories: state.survey.allCategories,
+  allQuestions: state.survey.allQuestions,
+});
+
+export default connect(mapStateToProps, { getAllCategories, getAllQuestions })(
+  Survey
+);
