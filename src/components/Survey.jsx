@@ -35,7 +35,7 @@ const Survey = ({
   useEffect(() => {
     getAllCategories();
     getAllQuestions();
-  }, []);
+  }, [allCategories, allQuestions]);
 
   const gatherFeedback = (e, choice, question_id, category_id) => {
     let answer = { choice, question_id, category_id };
@@ -149,7 +149,7 @@ const Survey = ({
 
       <div className="col-md-6 col-sm-12 ps-2 mt-3">
         <div className="mb-3">
-          <label for="exampleFormControlInput1" className="form-label">
+          <label htmlFor="exampleFormControlInput1" className="form-label">
             Name
           </label>
           <input
@@ -160,7 +160,7 @@ const Survey = ({
           />
         </div>
         <div className="mb-3">
-          <label for="exampleFormControlInput1" className="form-label">
+          <label htmlFor="exampleFormControlInput1" className="form-label">
             Phone
           </label>
           <input
