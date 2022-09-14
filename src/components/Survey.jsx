@@ -35,7 +35,7 @@ const Survey = ({
   useEffect(() => {
     getAllCategories();
     getAllQuestions();
-  }, [allCategories, allQuestions]);
+  }, []);
 
   const gatherFeedback = (e, choice, question_id, category_id) => {
     let answer = { choice, question_id, category_id };
