@@ -23,14 +23,11 @@ const Survey = ({
   //   { id: 3, name: "Category 3" },
   // ]);
   const [choices] = useState([
-    { question_id: 1, id: 1, choice: "Extremly quick" },
-    { question_id: 1, id: 2, choice: "Quite quick" },
-    { question_id: 1, id: 3, choice: "Slightly quick" },
-    { question_id: 1, id: 4, choice: "Moderately quick" },
-    { question_id: 2, id: 5, choice: "Extremly quick 2" },
-    { question_id: 2, id: 6, choice: "Quite quic 2k" },
-    { question_id: 3, id: 7, choice: "Slightly quick 3" },
-    { question_id: 3, id: 8, choice: "Moderately quick 3" },
+    { id: 1, choice: 1 },
+    { id: 2, choice: 2 },
+    { id: 3, choice: 3 },
+    { id: 4, choice: 4 },
+    { id: 5, choice: 5 },
   ]);
 
   const [customerFeedback, setCustomerFeedback] = useState([]);
@@ -69,28 +66,26 @@ const Survey = ({
   };
 
   const displayChoices = (question_id, category_id) => {
-    const allChoices = choices
-      .filter((choice) => choice.question_id === question_id)
-      .map((ch) => {
-        return (
-          <div key={ch.id}>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name={ch.question_id}
-                id={ch.question_id}
-                onChange={(e) =>
-                  gatherFeedback(e, ch.choice, question_id, category_id)
-                }
-              />
-              <label className="form-check-label" htmlFor={ch.question_id}>
-                {ch.choice}
-              </label>
-            </div>
+    const allChoices = choices.map((ch) => {
+      return (
+        <div key={ch.id}>
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name={ch.question_id}
+              id={ch.question_id}
+              onChange={(e) =>
+                gatherFeedback(e, ch.choice, question_id, category_id)
+              }
+            />
+            <label className="form-check-label" htmlFor={ch.question_id}>
+              {ch.choice}
+            </label>
           </div>
-        );
-      });
+        </div>
+      );
+    });
 
     return allChoices;
   };
