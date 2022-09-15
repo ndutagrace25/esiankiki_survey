@@ -259,7 +259,7 @@ const Survey = ({
         Esiankiki
       </div>
       <div className="p-3">
-        Thank you for visitting Esiankiki, I hope you enjoyed your stay. Looking
+        Thank you for visiting Esiankiki, I hope you enjoyed your stay. Looking
         forward to serve you again. We would appreciate if you would give us
         some feedback below on our services in the different areas you have been
         served.
