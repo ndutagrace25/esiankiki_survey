@@ -4,7 +4,7 @@ import axios from "axios";
 
 // axios.defaults.baseURL = `https://powapi-node-6bpq7f4ctq-de.a.run.app`;
 // axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-axios.defaults.baseURL = `http://44.201.123.236:8080`;
+axios.defaults.baseURL = `https://esiankikifeedback.duckdns.org`;
 
 axios.interceptors.request.use((request) => {
   console.log("Starting Request", request);
