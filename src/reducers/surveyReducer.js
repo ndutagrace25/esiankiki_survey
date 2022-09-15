@@ -5,6 +5,8 @@ import {
   GET_ALL_QUESTIONS_ERROR,
   GET_ALL_USERS,
   GET_ALL_USERS_ERROR,
+  SAVE_FEEDBACK,
+  SAVE_FEEDBACK_ERROR,
 } from "../actions/types";
 
 const initialState = {
@@ -14,6 +16,8 @@ const initialState = {
   allQuestionsErr: {},
   allUsers: [],
   allUsersErr: {},
+  savedFeedback: {},
+  savedFeedbackErr: {},
 };
 
 export default function red(state = initialState, action) {
@@ -47,6 +51,16 @@ export default function red(state = initialState, action) {
       return {
         ...state,
         allUsersErr: action.payload,
+      };
+    case SAVE_FEEDBACK:
+      return {
+        ...state,
+        savedFeedback: action.payload,
+      };
+    case SAVE_FEEDBACK_ERROR:
+      return {
+        ...state,
+        savedFeedbackErr: action.payload,
       };
 
     default:

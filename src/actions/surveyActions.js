@@ -6,6 +6,8 @@ import {
   GET_ALL_QUESTIONS_ERROR,
   GET_ALL_USERS,
   GET_ALL_USERS_ERROR,
+  SAVE_FEEDBACK,
+  SAVE_FEEDBACK_ERROR,
 } from "./types";
 import Swal from "sweetalert2";
 
@@ -66,10 +68,10 @@ export const getAllQuestions = () => (dispatch) => {
 };
 
 // get all users
-export const getAllUsers = (id, data) => (dispatch) => {
+export const getAllUsers = () => (dispatch) => {
   let url = `user`;
   axios
-    .get(url, data)
+    .get(url)
     .then((response) => {
       dispatch({
         type: GET_ALL_USERS,
@@ -87,6 +89,35 @@ export const getAllUsers = (id, data) => (dispatch) => {
         Swal.fire("Error", error.response.data.message, "error");
         dispatch({
           type: GET_ALL_USERS_ERROR,
+          payload: error.response.data,
+        });
+      }
+    });
+};
+
+// save customer feedback
+export const saveFeedback = (data) => (dispatch) => {
+  let url = `feedback`;
+  axios
+    .post(url, data)
+    .then((response) => {
+      // Swal.fire("Success", response.data.message, "success");
+      dispatch({
+        type: SAVE_FEEDBACK,
+        payload: response.data,
+      });
+    })
+    .catch((error) => {
+      if (error.message) {
+        // Swal.fire("Error", error.message, "error");
+        dispatch({
+          type: SAVE_FEEDBACK_ERROR,
+          payload: error.message,
+        });
+      } else {
+        // Swal.fire("Error", error.response.data.message, "error");
+        dispatch({
+          type: SAVE_FEEDBACK_ERROR,
           payload: error.response.data,
         });
       }

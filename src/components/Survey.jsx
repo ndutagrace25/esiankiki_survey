@@ -1,44 +1,103 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Category } from "../common";
 import classNames from "classnames";
 import { connect } from "react-redux";
-import { getAllCategories, getAllQuestions } from "../actions/surveyActions";
+import {
+  getAllCategories,
+  getAllQuestions,
+  getAllUsers,
+  saveFeedback,
+} from "../actions/surveyActions";
+import Select from "react-select";
+import Swal from "sweetalert2";
 
 const Survey = ({
   allCategories,
   getAllCategories,
   allQuestions,
   getAllQuestions,
+  allUsers,
+  getAllUsers,
+  saveFeedback,
 }) => {
+  let newArray = [
+    { user_first_name: "Not", user_last_name: "Sure", id: "Not Sure" },
+    ...allUsers,
+  ];
+  const userOptions =
+    allUsers instanceof Array
+      ? newArray.map((user) => {
+          return {
+            label: `${user.user_first_name} ${user.user_last_name}`,
+            value: user.id,
+          };
+        })
+      : null;
   const [activeCategory, setActiveCategory] = useState(0);
-  // const [allQuestions] = useState([
-  //   { category_id: 1, id: 1, question: "Test question one" },
-  //   { category_id: 1, id: 4, question: "Test question two" },
-  //   { category_id: 2, id: 2, question: "Test question one category 2" },
-  //   { category_id: 3, id: 3, question: "Test question one category 3" },
-  // ]);
-  // const [categories] = useState([
-  //   { id: 1, name: "Check In" },
-  //   { id: 2, name: "Category 2" },
-  //   { id: 3, name: "Category 3" },
-  // ]);
+
   const [choices] = useState([
-    { id: 1, choice: 1 },
-    { id: 2, choice: 2 },
-    { id: 3, choice: 3 },
-    { id: 4, choice: 4 },
-    { id: 5, choice: 5 },
+    { id: "1", choice: "1" },
+    { id: "2", choice: "2" },
+    { id: "3", choice: "3" },
+    { id: "4", choice: "4" },
+    { id: "5", choice: "5" },
   ]);
 
   const [customerFeedback, setCustomerFeedback] = useState([]);
+  const [user_id, setUserId] = useState(null);
+  const [user_name, setUserName] = useState(null);
+  const [showQuestionsCat, setShowQuestions] = useState(0);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [categoryChanged, setCategoryChange] = useState(false);
 
   useEffect(() => {
     getAllCategories();
     getAllQuestions();
+    getAllUsers();
   }, []);
 
-  const gatherFeedback = (e, choice, question_id, category_id) => {
-    let answer = { choice, question_id, category_id };
+  const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  };
+
+  const prevActiveCategory = usePrevious({ activeCategory });
+
+  useEffect(() => {
+    if (
+      prevActiveCategory?.activeCategory !== activeCategory &&
+      activeCategory !== 0
+    ) {
+      // process here
+      console.log("they are diff", "answer");
+      setCategoryChange(true);
+    } else {
+      console.log("same", "answer");
+      setCategoryChange(false);
+    }
+  }, [activeCategory]);
+
+  const gatherFeedback = (
+    e,
+    choice,
+    question_id,
+    category_id,
+    category_name,
+    question_statement
+  ) => {
+    let answer = {
+      choice,
+      question_id: question_id.toString(),
+      category_id: category_id.toString(),
+      user_id: user_id === "Not Sure" ? null : user_id.toString(),
+      category_name,
+      question_statement,
+      user_name: user_id === "Not Sure" ? null : user_name,
+    };
 
     const answerArray = [answer];
 
@@ -51,6 +110,10 @@ const Survey = ({
     if (filtredArray.length === 0) {
       // if the question is not yet answered, add to the already answered allQuestions
       setCustomerFeedback([...customerFeedback, answer]);
+      if (!categoryChanged) {
+        setUserId(null);
+        setUserName(null);
+      }
     } else {
       // if the question had already been answered, replace with the new answer
       const newArray = customerFeedback.map(
@@ -58,14 +121,25 @@ const Survey = ({
           answerArray.find((o) => o.question_id === obj.question_id) || obj
       );
       setCustomerFeedback(newArray);
+      if (!categoryChanged) {
+        setUserId(null);
+        setUserName(null);
+      }
     }
   };
+
+  // console.log(customerFeedback, "answer", categoryChanged);
 
   const setActive = (index) => {
     setActiveCategory(index);
   };
 
-  const displayChoices = (question_id, category_id) => {
+  const displayChoices = (
+    question_id,
+    category_id,
+    category_name,
+    question_statement
+  ) => {
     const allChoices = choices.map((ch) => {
       return (
         <div key={ch.id}>
@@ -76,7 +150,14 @@ const Survey = ({
               name={ch.question_id}
               id={ch.question_id}
               onChange={(e) =>
-                gatherFeedback(e, ch.choice, question_id, category_id)
+                gatherFeedback(
+                  e,
+                  ch.choice,
+                  question_id,
+                  category_id,
+                  category_name,
+                  question_statement
+                )
               }
             />
             <label className="form-check-label" htmlFor={ch.question_id}>
@@ -90,7 +171,7 @@ const Survey = ({
     return allChoices;
   };
 
-  const displayQuestions = (category_id) => {
+  const displayQuestions = (category_id, category_name) => {
     const questions =
       allQuestions instanceof Array
         ? allQuestions
@@ -100,7 +181,12 @@ const Survey = ({
                 <div key={qsn.id} className="my-3">
                   <div>{qsn.question}</div>
                   <div className="ms-3 mt-2">
-                    {displayChoices(qsn.id, category_id)}
+                    {displayChoices(
+                      qsn.id,
+                      category_id,
+                      category_name,
+                      qsn.question
+                    )}
                   </div>
                 </div>
               );
@@ -128,12 +214,45 @@ const Survey = ({
                   activeCategory !== cat.id && "d-none"
                 )}
               >
-                {displayQuestions(cat.id)}
+                <div className="my-3 col-md-6 col-sm-12">
+                  <label>Who served you on this section?</label>
+                  <Select
+                    options={userOptions}
+                    placeholder="Select staff"
+                    onChange={(selectedOption) => {
+                      displayQuestions(cat.id, cat.name);
+                      setUserId(selectedOption.value);
+                      setUserName(selectedOption.label);
+                      setShowQuestions(cat.id);
+                    }}
+                  />
+                </div>
+                <div className={showQuestionsCat !== cat.id && "d-none"}>
+                  {displayQuestions(cat.id, cat.name)}
+                </div>
               </div>
             </div>
           );
         })
       : null;
+
+  const saveCustomerFeedback = () => {
+    const dataToSave = customerFeedback.map((item) => {
+      return { ...item, phone, email };
+    });
+
+    try {
+      dataToSave.map((item) => saveFeedback(item));
+      Swal.fire(
+        "Success",
+        "Your feedback was successfully received.Thankyou.",
+        "success"
+      );
+    } catch (error) {
+      Swal.fire("Error", "Something went wrong, try again", "error");
+    }
+  };
+
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-center align-items-center py-3 bg-black text-warning fw-bold fs-4">
@@ -150,28 +269,18 @@ const Survey = ({
       <div className="col-md-6 col-sm-12 ps-2 mt-3">
         <div className="mb-3">
           <label htmlFor="exampleFormControlInput1" className="form-label">
-            Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleFormControlInput1" className="form-label">
             Phone
           </label>
           <input
             type="text"
             className="form-control"
             id="exampleFormControlInput1"
-            placeholder=""
+            placeholder="07xxxxxxxx"
+            onChange={(e) => setPhone(e.target.value)}
           />
         </div>
         <div className="mb-3">
-          <label for="exampleFormControlInput1" className="form-label">
+          <label htmlFor="exampleFormControlInput1" className="form-label">
             Email
           </label>
           <input
@@ -179,11 +288,19 @@ const Survey = ({
             className="form-control"
             id="exampleFormControlInput1"
             placeholder="name@example.com"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
         <div className="d-flex justify-content-center my-3">
-          <button className="btn btn-primary px-5">Submit</button>
+          {customerFeedback.length > 0 && (
+            <button
+              className="btn btn-primary px-5"
+              onClick={() => saveCustomerFeedback()}
+            >
+              Submit
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -193,8 +310,12 @@ const Survey = ({
 const mapStateToProps = (state) => ({
   allCategories: state.survey.allCategories,
   allQuestions: state.survey.allQuestions,
+  allUsers: state.survey.allUsers,
 });
 
-export default connect(mapStateToProps, { getAllCategories, getAllQuestions })(
-  Survey
-);
+export default connect(mapStateToProps, {
+  getAllCategories,
+  getAllQuestions,
+  getAllUsers,
+  saveFeedback,
+})(Survey);

@@ -12,7 +12,7 @@ const Category = ({ category, value, name, setActive }) => {
           id="flexCheckDefault"
           onChange={setActive}
         />
-        <label className="form-check-label fw-bold fs-5" for="flexCheckDefault">
+        <label className="form-check-label fw-bold fs-5" htmlFor="flexCheckDefault">
           {category}
         </label>
       </div>
