@@ -180,7 +180,7 @@ const Survey = ({
             .map((qsn) => {
               return (
                 <div key={qsn.id} className="my-3">
-                  <div>{qsn.question}</div>
+                  <div>{qsn.question + " (On a scale of 1 - 5)"}</div>
                   <div className="ms-3 mt-2">
                     {displayChoices(
                       qsn.id,
