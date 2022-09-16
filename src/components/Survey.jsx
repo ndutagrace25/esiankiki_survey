@@ -50,6 +50,7 @@ const Survey = ({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [categoryChanged, setCategoryChange] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
 
   useEffect(() => {
     getAllCategories();
@@ -238,7 +239,7 @@ const Survey = ({
 
   const saveCustomerFeedback = () => {
     const dataToSave = customerFeedback.map((item) => {
-      return { ...item, phone, email };
+      return { ...item, phone, email, suggestion };
     });
 
     try {
@@ -265,6 +266,18 @@ const Survey = ({
         served.
       </div>
       <div className="mt-2 p-2">{displayCategories}</div>
+
+      <div className="my-3 col-md-6 col-sm-12">
+        <div className="form-floating">
+          <textarea
+            className="form-control"
+            placeholder="Leave a comment here"
+            id="floatingTextarea"
+            onChange={(e) => setSuggestion(e.target.value)}
+          ></textarea>
+          <label for="floatingTextarea">Give us any suggestion/feedback?</label>
+        </div>
+      </div>
 
       <div className="col-md-6 col-sm-12 ps-2 mt-3">
         <div className="mb-3">
