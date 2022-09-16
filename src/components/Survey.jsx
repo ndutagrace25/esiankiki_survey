@@ -243,14 +243,9 @@ const Survey = ({
     });
 
     try {
-      dataToSave.map((item) => saveFeedback(item));
-      Swal.fire(
-        "Success",
-        "Your feedback was successfully received.Thankyou.",
-        "success"
-      );
+      saveFeedback(dataToSave)
     } catch (error) {
-      Swal.fire("Error", "Something went wrong, try again", "error");
+      // Swal.fire("Error", "Something went wrong, try again", "error");
     }
   };
 
