@@ -241,12 +241,9 @@ const Survey = ({
     const dataToSave = customerFeedback.map((item) => {
       return { ...item, phone, email, suggestion };
     });
+    saveFeedback(dataToSave);
+    Swal.fire("Success", "Your feedback has been received. Thank you.", "success");
 
-    try {
-      saveFeedback(dataToSave)
-    } catch (error) {
-      // Swal.fire("Error", "Something went wrong, try again", "error");
-    }
   };
 
   return (

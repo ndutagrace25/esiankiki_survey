@@ -101,7 +101,7 @@ export const saveFeedback = (data) => (dispatch) => {
   axios
     .post(url, data)
     .then((response) => {
-      Swal.fire("Success", response.data.message, "success");
+      // Swal.fire("Success", response.data.message, "success");
       dispatch({
         type: SAVE_FEEDBACK,
         payload: response.data,
@@ -109,7 +109,7 @@ export const saveFeedback = (data) => (dispatch) => {
     })
     .catch((error) => {
       if (error.message) {
-        Swal.fire("Error", error.message, "error");
+        // Swal.fire("Error", error.message, "error");
         dispatch({
           type: SAVE_FEEDBACK_ERROR,
           payload: error.message,
