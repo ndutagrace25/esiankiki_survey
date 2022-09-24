@@ -257,13 +257,12 @@ const Survey = ({
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-center align-items-center py-2 bg-black text-warning fw-bold fs-4">
-        <img src={logo} alt="Esiankiki" height="60" width="60"/>
+        <img src={logo} alt="Esiankiki" height="60" width="60" />
       </div>
       <div className="p-3">
-        Thank you for visiting Esiankiki, I hope you enjoyed your stay. Looking
-        forward to serve you again. We would appreciate if you would give us
-        some feedback below on our services in the different areas you have been
-        served.
+        We are always honored to have you and look forward to “spoil” you again,
+        we would appreciate your complement and feedback below on our services
+        in our endeavor to offer memorable experienced.
       </div>
       <div className="mt-2 p-2">{displayCategories}</div>
 
