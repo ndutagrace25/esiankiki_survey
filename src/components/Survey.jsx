@@ -259,7 +259,7 @@ const Survey = ({
       <div className="d-flex justify-content-center align-items-center py-2 bg-black text-warning fw-bold fs-4">
         <img src={logo} alt="Esiankiki" height="60" width="60" />
       </div>
-      <div className="p-3">
+      <div className="px-3 pt-3">
         We are always honored to have you and look forward to “spoil” you again,
         we would appreciate your complement and feedback below on our services
         in our endeavor to offer memorable experienced.
