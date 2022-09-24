@@ -267,6 +267,10 @@ const Survey = ({
       <div className="mt-2 p-2">{displayCategories}</div>
 
       <div className="my-3 col-md-6 col-sm-12">
+        <label className="my-2">
+          We would appreciate your suggestions as we continue to improve our
+          hotel and its services.
+        </label>
         <div className="form-floating">
           <textarea
             className="form-control"
@@ -274,7 +278,10 @@ const Survey = ({
             id="floatingTextarea"
             onChange={(e) => setSuggestion(e.target.value)}
           ></textarea>
-          <label for="floatingTextarea">Give us any suggestion/feedback?</label>
+          {/* <label for="floatingTextarea">
+            We would appreciate your suggestions as we continue to improve our
+            hotel and its services.
+          </label> */}
         </div>
       </div>
 
