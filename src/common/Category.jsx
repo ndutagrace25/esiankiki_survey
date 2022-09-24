@@ -1,6 +1,6 @@
 import React from "react";
 
-const Category = ({ category, value, name, setActive }) => {
+const Category = ({ category, value, name, setActive, cat_id }) => {
   return (
     <div className="shadow-sm rounded py-3 px-1 col-md-6 col-sm-12">
       <div className="form-check ">
@@ -10,9 +10,13 @@ const Category = ({ category, value, name, setActive }) => {
           value={value}
           name={name}
           id="flexCheckDefault"
-          onChange={setActive}
+          onChange={(e) => setActive(e, cat_id)}
+          // checked={true}
         />
-        <label className="form-check-label fw-bold fs-5" htmlFor="flexCheckDefault">
+        <label
+          className="form-check-label fw-bold fs-5"
+          htmlFor="flexCheckDefault"
+        >
           {category}
         </label>
       </div>

@@ -70,8 +70,8 @@ const Survey = ({
 
   useEffect(() => {
     if (
-      prevActiveCategory?.activeCategory !== activeCategory &&
-      activeCategory !== 0
+      prevActiveCategory?.activeCategory.id !== activeCategory.id &&
+      activeCategory.id !== 0
     ) {
       // process here
       console.log("they are diff", "answer");
@@ -80,7 +80,7 @@ const Survey = ({
       console.log("same", "answer");
       setCategoryChange(false);
     }
-  }, [activeCategory]);
+  }, [activeCategory?.id, activeCategory?.checked]);
 
   const gatherFeedback = (
     e,
@@ -131,9 +131,12 @@ const Survey = ({
 
   // console.log(customerFeedback, "answer", categoryChanged);
 
-  const setActive = (index) => {
-    setActiveCategory(index);
+  const setActive = (e, index) => {
+    console.log(e.target.checked, "valuevalue");
+    setActiveCategory({ id: index, checked: e.target.checked });
   };
+
+  console.log(activeCategory.id, activeCategory.checked, "valuevalue");
 
   const displayChoices = (
     question_id,
@@ -143,7 +146,7 @@ const Survey = ({
   ) => {
     const allChoices = choices.map((ch) => {
       return (
-        <div key={ch.id}>
+        <div key={ch.id} className="ms-3">
           <div className="form-check">
             <input
               className="form-check-input"
@@ -181,7 +184,7 @@ const Survey = ({
               return (
                 <div key={qsn.id} className="my-3">
                   <div>{qsn.question + " (On a scale of 1 - 5)"}</div>
-                  <div className="ms-3 mt-2">
+                  <div className="ms-3 mt-2 d-flex flex-row">
                     {displayChoices(
                       qsn.id,
                       category_id,
@@ -207,12 +210,15 @@ const Survey = ({
             >
               <Category
                 category={cat.name}
-                setActive={() => setActive(cat.id)}
+                setActive={setActive}
+                cat_id={cat.id}
               />
               <div
                 className={classNames(
                   "ms-3",
-                  activeCategory !== cat.id && "d-none"
+                  activeCategory.id === cat.id && activeCategory.checked
+                    ? "d-block"
+                    : "d-none"
                 )}
               >
                 <div className="my-3 col-md-6 col-sm-12">
@@ -242,8 +248,11 @@ const Survey = ({
       return { ...item, phone, email, suggestion };
     });
     saveFeedback(dataToSave);
-    Swal.fire("Success", "Your feedback has been received. Thank you.", "success");
-
+    Swal.fire(
+      "Success",
+      "Your feedback has been received. Thank you.",
+      "success"
+    );
   };
 
   return (
