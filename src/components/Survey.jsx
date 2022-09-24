@@ -278,7 +278,9 @@ const Survey = ({
             id="floatingTextarea"
             onChange={(e) => setSuggestion(e.target.value)}
           ></textarea>
-          <label for="floatingTextarea" className="text-muted">Suggestions</label>
+          <label for="floatingTextarea" className="text-muted">
+            <small>Suggestions</small>
+          </label>
         </div>
       </div>
 
