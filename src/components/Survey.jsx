@@ -130,7 +130,7 @@ const Survey = ({
     }
   };
 
-  // console.log(customerFeedback, "answer", categoryChanged);
+  console.log(customerFeedback, "valuevalue");
 
   const setActive = (e, index) => {
     setActiveCategory({ id: index, checked: e.target.checked });
@@ -210,6 +210,7 @@ const Survey = ({
                 category={cat.name}
                 setActive={setActive}
                 cat_id={cat.id}
+                activeCategory={activeCategory}
               />
               <div
                 className={classNames(

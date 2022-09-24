@@ -1,6 +1,13 @@
 import React from "react";
 
-const Category = ({ category, value, name, setActive, cat_id }) => {
+const Category = ({
+  category,
+  value,
+  name,
+  setActive,
+  cat_id,
+  activeCategory,
+}) => {
   return (
     <div className="shadow-sm rounded py-3 px-1 col-md-6 col-sm-12">
       <div className="form-check ">
@@ -11,7 +18,11 @@ const Category = ({ category, value, name, setActive, cat_id }) => {
           name={name}
           id="flexCheckDefault"
           onChange={(e) => setActive(e, cat_id)}
-          // checked={true}
+          checked={
+            activeCategory.id === cat_id && activeCategory.checked
+              ? true
+              : false
+          }
         />
         <label
           className="form-check-label fw-bold fs-5"
