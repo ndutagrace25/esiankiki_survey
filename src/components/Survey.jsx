@@ -256,7 +256,7 @@ const Survey = ({
   return (
     <div className="container-fluid">
       <div className="d-flex justify-content-center align-items-center py-2 bg-black text-warning fw-bold fs-4">
-        <img src={logo} alt="Esiankiki" height="90" width="90"/>
+        <img src={logo} alt="Esiankiki" height="60" width="60"/>
       </div>
       <div className="p-3">
         Thank you for visiting Esiankiki, I hope you enjoyed your stay. Looking
