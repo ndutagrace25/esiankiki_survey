@@ -10,6 +10,7 @@ import {
 } from "../actions/surveyActions";
 import Select from "react-select";
 import Swal from "sweetalert2";
+import logo from "../images/logo.png";
 
 const Survey = ({
   allCategories,
@@ -132,11 +133,8 @@ const Survey = ({
   // console.log(customerFeedback, "answer", categoryChanged);
 
   const setActive = (e, index) => {
-    console.log(e.target.checked, "valuevalue");
     setActiveCategory({ id: index, checked: e.target.checked });
   };
-
-  console.log(activeCategory.id, activeCategory.checked, "valuevalue");
 
   const displayChoices = (
     question_id,
@@ -257,8 +255,8 @@ const Survey = ({
 
   return (
     <div className="container-fluid">
-      <div className="d-flex justify-content-center align-items-center py-3 bg-black text-warning fw-bold fs-4">
-        Esiankiki
+      <div className="d-flex justify-content-center align-items-center py-2 bg-black text-warning fw-bold fs-4">
+        <img src={logo} alt="Esiankiki" height="90" width="90"/>
       </div>
       <div className="p-3">
         Thank you for visiting Esiankiki, I hope you enjoyed your stay. Looking
