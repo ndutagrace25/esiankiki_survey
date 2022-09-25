@@ -275,8 +275,7 @@ const Survey = ({
       </div>
       <div className="px-3 pt-3">
         We are always honored to have you and look forward to “spoil” you again,
-        we would appreciate your complement and feedback below on our services
-        in our endeavor to offer memorable experienced.
+        we would appreciate your complement/comment in our endeavor to offer memorable experience.
       </div>
       <div className="mt-2 p-2">{displayCategories}</div>
 
