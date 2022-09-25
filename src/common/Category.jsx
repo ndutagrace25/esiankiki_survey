@@ -7,6 +7,7 @@ const Category = ({
   setActive,
   cat_id,
   activeCategory,
+  setShowQuestions,
 }) => {
   return (
     <div className="shadow-sm rounded py-3 px-1 col-md-6 col-sm-12">
@@ -17,7 +18,10 @@ const Category = ({
           value={value}
           name={name}
           id="flexCheckDefault"
-          onChange={(e) => setActive(e, cat_id)}
+          onChange={(e) => {
+            setActive(e, cat_id);
+            category === "Health & Wellness" && setShowQuestions(cat_id);
+          }}
           checked={
             activeCategory.id === cat_id && activeCategory.checked
               ? true

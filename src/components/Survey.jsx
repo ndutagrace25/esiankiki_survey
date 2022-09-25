@@ -21,16 +21,15 @@ const Survey = ({
   getAllUsers,
   saveFeedback,
 }) => {
-  let newArray = [
-    { user_first_name: "Not", user_last_name: "Sure", id: "Not Sure" },
-    ...allUsers,
-  ];
+  let newArray = [{ user_first_name: "Not Sure" }, ...allUsers];
+
   const userOptions =
     allUsers instanceof Array
       ? newArray.map((user) => {
           return {
-            label: `${user.user_first_name} ${user.user_last_name}`,
-            value: user.id,
+            label: user.user_first_name,
+            value: user.user_first_name,
+            category_id: user.category_id,
           };
         })
       : null;
@@ -95,7 +94,7 @@ const Survey = ({
       choice,
       question_id: question_id.toString(),
       category_id: category_id.toString(),
-      user_id: user_id === "Not Sure" ? null : user_id.toString(),
+      // user_id: user_id === "Not Sure" ? null : user_id.toString(),
       category_name,
       question_statement,
       user_name: user_id === "Not Sure" ? null : user_name,
@@ -129,8 +128,6 @@ const Survey = ({
       }
     }
   };
-
-  console.log(customerFeedback, "valuevalue");
 
   const setActive = (e, index) => {
     setActiveCategory({ id: index, checked: e.target.checked });
@@ -211,6 +208,7 @@ const Survey = ({
                 setActive={setActive}
                 cat_id={cat.id}
                 activeCategory={activeCategory}
+                setShowQuestions={setShowQuestions}
               />
               <div
                 className={classNames(
@@ -220,19 +218,34 @@ const Survey = ({
                     : "d-none"
                 )}
               >
-                <div className="my-3 col-md-6 col-sm-12">
-                  <label>Who served you on this section?</label>
-                  <Select
-                    options={userOptions}
-                    placeholder="Select staff"
-                    onChange={(selectedOption) => {
-                      displayQuestions(cat.id, cat.name);
-                      setUserId(selectedOption.value);
-                      setUserName(selectedOption.label);
-                      setShowQuestions(cat.id);
-                    }}
-                  />
-                </div>
+                {cat.name !== "Health & Wellness" && (
+                  <div className="my-3 col-md-6 col-sm-12">
+                    <label>Who served you on this section?</label>
+                    <Select
+                      options={
+                        cat.name === "Rooms Division"
+                          ? userOptions.filter(
+                              (item) =>
+                                item.category_id === 2 ||
+                                item.value === "Not Sure"
+                            )
+                          : userOptions.filter(
+                              (item) =>
+                                item.category_id === 1 ||
+                                item.value === "Not Sure"
+                            )
+                      }
+                      placeholder="Select staff"
+                      onChange={(selectedOption) => {
+                        displayQuestions(cat.id, cat.name);
+                        setUserId(selectedOption.value);
+                        setUserName(selectedOption.label);
+                        setShowQuestions(cat.id);
+                      }}
+                    />
+                  </div>
+                )}
+
                 <div className={showQuestionsCat !== cat.id && "d-none"}>
                   {displayQuestions(cat.id, cat.name)}
                 </div>
@@ -246,6 +259,7 @@ const Survey = ({
     const dataToSave = customerFeedback.map((item) => {
       return { ...item, phone, email, suggestion };
     });
+
     saveFeedback(dataToSave);
     Swal.fire(
       "Success",
