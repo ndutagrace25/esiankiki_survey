@@ -220,7 +220,7 @@ const Survey = ({
               >
                 {cat.name !== "Health & Wellness" && (
                   <div className="my-3 col-md-6 col-sm-12">
-                    <label>Who served you on this section?</label>
+                    <label>Who was your service personnel?</label>
                     <Select
                       options={
                         cat.name === "Rooms Division"
@@ -275,7 +275,8 @@ const Survey = ({
       </div>
       <div className="px-3 pt-3">
         We are always honored to have you and look forward to “spoil” you again,
-        we would appreciate your complement/comment in our endeavor to offer memorable experience.
+        we would appreciate your complement/comment in our endeavor to offer
+        memorable experience.
       </div>
       <div className="mt-2 p-2">{displayCategories}</div>
 
